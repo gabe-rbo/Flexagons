@@ -1,7 +1,6 @@
 from pathlib import Path
 import os
 import cv2
-import time
 
 from PIL import Image, ImageDraw
 from Facas.GeradorDeFacas import criar_marcas_registro_vetoriais
@@ -211,14 +210,14 @@ def plano(img1: str, img2: str, img3: str, img4: str, img5: str, img6: str, graf
 
             # ---------------------------------------------------------------------------------------------------------
             # Bordas da imagem 4
-            B34F2 = img4.crop((ajuste, tamanho / 2, tamanho / 2, tamanho / 2 + ajuste)).rotate(180)
-            B44F2 = img4.crop((tamanho / 2, ajuste,  tamanho / 2 + ajuste, tamanho / 2 + ajuste)).rotate(180)
-            B44F3 = img4.crop((tamanho / 2, tamanho / 2, tamanho / 2 + ajuste, tamanho - ajuste)).rotate(180)
+            B44F1 = img4.crop((tamanho - ajuste, ajuste, tamanho, tamanho / 2 + ajuste)).rotate(180)
+            B34F1 = img4.crop((tamanho/2, tamanho / 2, tamanho, tamanho / 2 + ajuste)).rotate(180)
+            B44F2 = img4.crop((tamanho/2, ajuste, tamanho/2 + ajuste, tamanho / 2)).rotate(180)
+            B24F2 = img4.crop((0, 0, ajuste, tamanho/2)).rotate(180)
+            B14F3 = img4.crop((0, tamanho / 2 - ajuste, tamanho / 2, tamanho / 2)).rotate(180)
             B24F3 = img4.crop((0, tamanho / 2, ajuste, tamanho - ajuste)).rotate(180)
-            B14F4 = img4.crop((tamanho / 2 - ajuste, tamanho / 2 - ajuste, tamanho - ajuste, tamanho / 2)).rotate(180)
-            B24F4 = img4.crop((tamanho / 2 - ajuste, tamanho / 2, tamanho / 2, tamanho - ajuste)).rotate(180)
-            B24F1 = img4.crop((tamanho / 2 - ajuste, ajuste, tamanho / 2, tamanho / 2)).rotate(180)
-            B44F1 = img4.crop((tamanho - ajuste, ajuste, tamanho, tamanho / 2)).rotate(180)
+            B44F4 = img4.crop((tamanho - ajuste, tamanho/2, tamanho, tamanho - ajuste)).rotate(180)
+            B24F4 = img4.crop((tamanho/2 - ajuste, tamanho/2, tamanho/2, tamanho - ajuste)).rotate(180)
 
             # Bordas da imagem 2
             B32F3 = img2.crop((0, tamanho - ajuste, tamanho / 2, tamanho)).rotate(180)
@@ -232,15 +231,14 @@ def plano(img1: str, img2: str, img3: str, img4: str, img5: str, img6: str, graf
 
 
             # Bordas da imagem 5
-            B35F2 = img5.crop((0, tamanho/2, tamanho/2, tamanho/2 + ajuste)).rotate(180)
-            B15F2 = img5.crop((0, 0, tamanho / 2 - ajuste, ajuste)).rotate(180)
-            B35F1 = img5.crop((tamanho/2, tamanho / 2, tamanho - ajuste, tamanho / 2 + ajuste)).rotate(180)
-            B25F1 = img5.crop((tamanho / 2 - ajuste, 0, tamanho / 2, tamanho / 2)).rotate(180)
-            B35F4 = img5.crop((tamanho / 2, tamanho - ajuste, tamanho - ajuste, tamanho)).rotate(180)
-            B15F4 = img5.crop((tamanho / 2, tamanho / 2 - ajuste, tamanho - ajuste, tamanho / 2)).rotate(180)
-            B45F3 = img5.crop((tamanho / 2, tamanho / 2 - ajuste, tamanho / 2 + ajuste, tamanho - ajuste)).rotate(180)
-            B15F3 = img5.crop((0, tamanho / 2 - ajuste, tamanho / 2, tamanho / 2)).rotate(180)
-
+            B15F3 = img5.crop((ajuste, tamanho/2 - ajuste, tamanho / 2, tamanho/2)).rotate(180)
+            B35F3 = img5.crop((0, tamanho - ajuste, tamanho / 2, tamanho)).rotate(180)
+            B25F4 = img5.crop((tamanho/2 - ajuste, tamanho/2, tamanho / 2, tamanho)).rotate(180)
+            B35F4 = img5.crop((tamanho/2 - ajuste, tamanho - ajuste, tamanho - ajuste, tamanho)).rotate(180)
+            B35F1 = img5.crop(((tamanho / 2, tamanho/2, tamanho - ajuste, tamanho/2 + ajuste))).rotate(180)
+            B15F1 = img5.crop((tamanho / 2, 0, tamanho - ajuste, ajuste)).rotate(180)
+            B15F2 = img5.crop((0, 0, tamanho/2, ajuste)).rotate(180)
+            B45F2 = img5.crop((tamanho/2, 0, tamanho/2 + ajuste, tamanho / 2)).rotate(180)
 
         img1F1 = img1.crop((tamanho / 2, 0 + ajuste, tamanho - ajuste, tamanho / 2)).rotate(180)
         img1F2 = img1.crop((0 + ajuste, 0 + ajuste, tamanho / 2, tamanho / 2))
@@ -292,18 +290,26 @@ def plano(img1: str, img2: str, img3: str, img4: str, img5: str, img6: str, graf
         PlanoFrontal.paste(img6F4, (distancia_borda, distancia_borda + int(tamanho / 2) - ajuste))
 
         # Montando Plano Traseiro
-        PlanoTraseiro.paste(img4F2, (distancia_borda, distancia_borda))
+        #PlanoTraseiro.paste(img4F2, (distancia_borda, distancia_borda))
+        PlanoTraseiro.paste(img4F1, (distancia_borda, distancia_borda))
         PlanoTraseiro.paste(img2F3, (distancia_borda + int(tamanho / 2) - ajuste, distancia_borda))
-        PlanoTraseiro.paste(img5F2, (distancia_borda + tamanho - 2 * ajuste, distancia_borda))
-        PlanoTraseiro.paste(img5F1, (distancia_borda + int(tamanho * 3/2) - 3 * ajuste, distancia_borda))
+        #PlanoTraseiro.paste(img5F2, (distancia_borda + tamanho - 2 * ajuste, distancia_borda))
+        PlanoTraseiro.paste(img5F3, (distancia_borda + tamanho - 2 * ajuste, distancia_borda))
+        #PlanoTraseiro.paste(img5F1, (distancia_borda + int(tamanho * 3/2) - 3 * ajuste, distancia_borda))
+        PlanoTraseiro.paste(img5F4, (distancia_borda + int(tamanho * 3 / 2) - 3 * ajuste, distancia_borda))
         PlanoTraseiro.paste(img2F4, (distancia_borda + int(tamanho * 3/2) - 3 * ajuste, distancia_borda + int(tamanho / 2) - ajuste))
-        PlanoTraseiro.paste(img4F3, (distancia_borda + int(tamanho * 3/2) - 3 * ajuste, distancia_borda + tamanho - 2 * ajuste))
-        PlanoTraseiro.paste(img4F4, (distancia_borda + int(tamanho * 3/2) - 3 * ajuste, distancia_borda + int(tamanho * 3/2) - 3 * ajuste))
+        #PlanoTraseiro.paste(img4F3, (distancia_borda + int(tamanho * 3/2) - 3 * ajuste, distancia_borda + tamanho - 2 * ajuste))
+        PlanoTraseiro.paste(img4F2, (distancia_borda + int(tamanho * 3 / 2) - 3 * ajuste, distancia_borda + tamanho - 2 * ajuste))
+        #PlanoTraseiro.paste(img4F4, (distancia_borda + int(tamanho * 3/2) - 3 * ajuste, distancia_borda + int(tamanho * 3/2) - 3 * ajuste))
+        PlanoTraseiro.paste(img4F3, (distancia_borda + int(tamanho * 3 / 2) - 3 * ajuste, distancia_borda + int(tamanho * 3 / 2) - 3 * ajuste))
         PlanoTraseiro.paste(img2F1, (distancia_borda + tamanho - 2 * ajuste, distancia_borda + int(tamanho * 3 / 2) - 3 * ajuste))
-        PlanoTraseiro.paste(img5F4, (distancia_borda + int(tamanho / 2) - ajuste, distancia_borda + int(tamanho * 3 / 2) - 3 * ajuste))
-        PlanoTraseiro.paste(img5F3, (distancia_borda, distancia_borda + int(tamanho * 3/2) - 3 * ajuste))
+        #PlanoTraseiro.paste(img5F4, (distancia_borda + int(tamanho / 2) - ajuste, distancia_borda + int(tamanho * 3 / 2) - 3 * ajuste))
+        PlanoTraseiro.paste(img5F1, (distancia_borda + int(tamanho / 2) - ajuste, distancia_borda + int(tamanho * 3 / 2) - 3 * ajuste))
+        #PlanoTraseiro.paste(img5F3, (distancia_borda, distancia_borda + int(tamanho * 3/2) - 3 * ajuste))
+        PlanoTraseiro.paste(img5F2, (distancia_borda, distancia_borda + int(tamanho * 3 / 2) - 3 * ajuste))
         PlanoTraseiro.paste(img2F2, (distancia_borda, distancia_borda + tamanho - 2 * ajuste))
-        PlanoTraseiro.paste(img4F1, (distancia_borda, distancia_borda + int(tamanho / 2) - ajuste))
+        #PlanoTraseiro.paste(img4F1, (distancia_borda, distancia_borda + int(tamanho / 2) - ajuste))
+        PlanoTraseiro.paste(img4F4, (distancia_borda, distancia_borda + int(tamanho / 2) - ajuste))
 
         if grafica:
 
@@ -358,48 +364,48 @@ def plano(img1: str, img2: str, img3: str, img4: str, img5: str, img6: str, graf
             # ---------------------------------------------------------------------------------------------------------
             # Bordinhas do plano traseiro.
 
-            PlanoTraseiro.paste(B34F2, (28 + ajuste, 28))
-            PlanoTraseiro.paste(B44F2, (28, 28))
+            PlanoTraseiro.paste(B44F1, (28, 28))
+            PlanoTraseiro.paste(B34F1, (28, 28))
             PlanoTraseiro.paste(B32F3, (28 + ajuste + 562, 28))
             PlanoTraseiro.paste(B12F3, (28 + ajuste + 562, 28 + 562 + ajuste))
-            PlanoTraseiro.paste(B35F2, (28 + ajuste + 562 * 2, 28))
-            PlanoTraseiro.paste(B15F2, (28 + ajuste + 562 * 2, 28 + 562 + ajuste))
-            PlanoTraseiro.paste(B35F1, (28 + ajuste + 562 * 3, 28))
-            PlanoTraseiro.paste(B25F1, (28 + ajuste + 562 * 4, 28))
+            PlanoTraseiro.paste(B35F3, (28 + ajuste + 562 * 2, 28))
+            PlanoTraseiro.paste(B15F3, (28 + ajuste + 562 * 2, 28 + 562 + ajuste))
+            PlanoTraseiro.paste(B35F4, (28 + ajuste + 562 * 3, 28))
+            PlanoTraseiro.paste(B25F4, (28 + ajuste + 562 * 4, 28))
             PlanoTraseiro.paste(B42F4, (28 + ajuste + 562 * 4, 28 + 562 + ajuste))
 
             # Precisamos de uma conexão triangular
-            B25F1_q = B25F1.crop((0, 562 - ajuste, ajuste, 562))
-            B22F4 = paste_triangle_directly(B25F1_q, B22F4, 'top-left')
-            PlanoTraseiro.paste(B22F4, (28 +  562 * 3, 28 + 562 + ajuste))
+            B15F3_q = B15F3.crop((562 - ajuste, 0, 562, ajuste))
+            B22F4 = paste_triangle_directly(B15F3_q, B22F4, 'top-left')
+            PlanoTraseiro.paste(B22F4, (28 + 562 * 3, 28 + 562 + ajuste))
 
-            PlanoTraseiro.paste(B44F3, (562 * 3 - 28 + ajuste, 28 + ajuste + 562 * 2))
-            PlanoTraseiro.paste(B24F3, (562 * 4 + 28 + ajuste, 28 + ajuste + 562 * 2))
-            PlanoTraseiro.paste(B24F4, (562 * 4 + 28 + ajuste, 28 + ajuste + 562 * 3))
-            PlanoTraseiro.paste(B14F4, (562 * 3 + 28 + ajuste, 28 + ajuste + 562 * 4))
+            PlanoTraseiro.paste(B44F2, (562 * 3 - 28 + ajuste, 28 + ajuste + 562 * 2))
+            PlanoTraseiro.paste(B24F2, (562 * 4 + 28 + ajuste, 28 + ajuste + 562 * 2))
+            PlanoTraseiro.paste(B24F3, (562 * 4 + 28 + ajuste, 28 + ajuste + 562 * 3))
+            PlanoTraseiro.paste(B14F3, (562 * 3 + 28 + ajuste, 28 + ajuste + 562 * 4))
 
             # Precisamos de uma conexão triangular aqui:
-            B44F3_q = B44F3.crop((0, 562 - ajuste, ajuste, 562))
-            B32F1 = paste_triangle_directly(B44F3_q, B32F1, 'top-right', position=(562 - ajuste, 0))
+            B44F2_q = B44F2.crop((0, 562 - ajuste, ajuste, 562))
+            B32F1 = paste_triangle_directly(B44F2_q, B32F1, 'top-right', position=(562 - ajuste, 0))
             PlanoTraseiro.paste(B32F1, (562 * 2 + 28 + ajuste, 28 + 562 * 3))
 
             PlanoTraseiro.paste(B12F1, (562 * 2 + 28 + ajuste, 28 + 562 * 4 + ajuste))
-            PlanoTraseiro.paste(B35F4, (562 + 28 + ajuste, 28 + 562 * 3))
-            PlanoTraseiro.paste(B15F4, (562 + 28 + ajuste, 28 + 562 * 4 + ajuste))
-            PlanoTraseiro.paste(B15F3, (28 + ajuste, 28 + 562 * 4 + ajuste))
-            PlanoTraseiro.paste(B45F3, (28, 28 + 562 * 3 + ajuste))
+            PlanoTraseiro.paste(B35F1, (562 + 28 + ajuste, 28 + 562 * 3))
+            PlanoTraseiro.paste(B15F1, (562 + 28 + ajuste, 28 + 562 * 4 + ajuste))
+            PlanoTraseiro.paste(B15F2, (28 + ajuste, 28 + 562 * 4 + ajuste))
+            PlanoTraseiro.paste(B45F2, (28, 28 + 562 * 3 + ajuste))
             PlanoTraseiro.paste(B22F2, (28, 28 + 562 * 2 + ajuste))
 
-            B35F4_q = B35F4.crop((0, 0, ajuste, ajuste))
-            B42F2 = paste_triangle_directly(B35F4_q, B42F2, 'bottom-left', position=(0, 562 - ajuste))
+            B35F1_q = B35F1.crop((0, 0, ajuste, ajuste))
+            B42F2 = paste_triangle_directly(B35F1_q, B42F2, 'bottom-left', position=(0, 562 - ajuste))
             PlanoTraseiro.paste(B42F2, (28 + 562 + ajuste, 28 + 562 * 2 + ajuste))
 
-            PlanoTraseiro.paste(B44F1, (28, 28 + 562 + ajuste))
+            PlanoTraseiro.paste(B44F4, (28, 28 + 562 + ajuste))
 
             B12F3_q = B12F3.crop((0, 0, ajuste, ajuste))
-            B24F1 = paste_triangle_directly(B12F3_q, B24F1, 'top-right')
+            B24F4 = paste_triangle_directly(B12F3_q, B24F4, 'top-right')
 
-            PlanoTraseiro.paste(B24F1, (28 + 562 + ajuste, 28 + 562 + ajuste))
+            PlanoTraseiro.paste(B24F4, (28 + 562 + ajuste, 28 + 562 + ajuste))
 
             PlanoFrontal = criar_marcas_registro_vetoriais(PlanoFrontal)
             PlanoTraseiro = criar_marcas_registro_vetoriais(PlanoTraseiro)
