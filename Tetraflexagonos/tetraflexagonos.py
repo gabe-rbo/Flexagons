@@ -270,11 +270,11 @@ def plano(img1: str, img2: str, img3: str, img4: str, img5: str, img6: str, graf
             # Recorte das bordas do plano traseiro
             B45F4 = img5.crop((tamanho - ajuste, tamanho / 2, tamanho, tamanho - ajuste)).rotate(90, expand=True)
             B15F4 = img5.crop((tamanho / 2, tamanho / 2 - ajuste, tamanho, tamanho / 2)).rotate(90, expand=True)
-            B11F1 = img1.crop((tamanho / 2, 0, tamanho, ajuste)).rotate(180)
+            B11F1 = img1.crop((tamanho / 2 - ajuste, 0, tamanho - ajuste, ajuste)).rotate(180)
             B31F1 = img1.crop((tamanho / 2, tamanho / 2, tamanho - ajuste, tamanho / 2 + ajuste)).rotate(180)
             B13F1 = img3.crop((tamanho / 2, 0, tamanho - ajuste, ajuste)).rotate(180)
             B33F1 = img3.crop((tamanho / 2, tamanho / 2, tamanho - ajuste, tamanho / 2 + ajuste)).rotate(180)
-            B33F2 = img3.crop((ajuste, tamanho / 2, tamanho / 2 + ajuste, tamanho / 2 + ajuste)).rotate(180)
+            B33F2 = img3.crop((0, tamanho / 2, tamanho / 2, tamanho / 2 + ajuste)).rotate(180)
             B23F2 = img3.crop((0, ajuste, ajuste, tamanho / 2)).rotate(180)
             B21F2 = img1.crop((0, ajuste, ajuste, tamanho / 2))
             B41F2 = img1.crop((tamanho / 2, ajuste, tamanho / 2 + ajuste, tamanho / 2))
